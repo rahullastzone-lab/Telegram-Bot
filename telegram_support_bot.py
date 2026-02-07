@@ -19,6 +19,12 @@
 # Note: Ensure you are using Python 3.7+
 """
 
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, constants
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, CallbackQueryHandler, MessageHandler, filters
@@ -150,6 +156,7 @@ def get_main_menu_keyboard():
         [InlineKeyboardButton("📄 Transaction Not Showing", callback_data=CB_TRANSACTION)],
         [InlineKeyboardButton("👨💻 Contact Admin", callback_data=CB_ADMIN)],
         [InlineKeyboardButton("❓ FAQs", callback_data=CB_FAQ)],
+        [InlineKeyboardButton("💬 Join WhatsApp Community", url="https://chat.whatsapp.com/CqntEdO4vRXDNbLC5cjZlE")],
     ]
     return InlineKeyboardMarkup(keyboard)
 
@@ -326,8 +333,12 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # -------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
-    # REPLACE WITH YOUR ACTUAL TOKEN
-    BOT_TOKEN = "8308434150:AAFytgNBrdx5pB093L1d8203zren1CulhcQ"
+    # Load token from environment variable
+    BOT_TOKEN = os.getenv("BOT_TOKEN")
+
+    if not BOT_TOKEN:
+        print("Error: BOT_TOKEN not found in .env file.")
+        exit(1)
 
     print("Starting LastZone Support Bot...")
     
